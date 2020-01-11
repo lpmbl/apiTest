@@ -51,8 +51,13 @@ func createEvent(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Kindly enter data with the event title and description only in order to update")
 	}
 
-	json.Unmarshal(reqBody, &newEvent)
-	
+	err = json.Unmarshal(reqBody, &newEvent)
+	if err != nil {
+		log.Fatal("Decoding error: ", err)
+	}
+
+	log.Printf("Received: %v", newEvent)
+
 	events = append(events, newEvent)
 	w.WriteHeader(http.StatusCreated)
 
